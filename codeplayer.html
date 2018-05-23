@@ -1,0 +1,192 @@
+<html>
+    <head>
+        <title>codeplayer</title>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="jquery-ui/jquery-ui.js"></script>
+        <link rel="stylesheet" href="jquery-ui/jquery-ui.css">
+        <style>
+            body{
+                margin:0;
+                border:0;
+            }
+            #top-nav{
+                width:100%;
+                height:33px;
+                background-color: lightgray;
+                
+            }
+            #top-wrapper{
+                margin: 0 auto;
+                width: 250px;
+            }
+            .topContent{
+                border: 1px black solid;
+                border-right: none;
+                float: left;
+                padding: 4;
+            }
+            .topContent:focus{
+                outline:none;
+
+            }
+            #logo{
+                float: left;
+                padding-top: 2;
+                font-size: 25px;
+            }
+            #html{
+                 border-top-left-radius:7px ;
+                 border-bottom-left-radius:7px ;
+
+            }
+            #output{
+                border-right: 1px black solid;
+                 border-top-right-radius:7px ;
+                 border-bottom-right-radius:7px ;
+
+            }
+            .bodyContent{
+                display: none;
+                float:left;
+                height: 100%;
+                width: 25vw;
+                box-sizing:border-box;
+                border-right: 1px solid black;
+            }
+            #outputBo{
+                border-right:none;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <p>Enter a number</p>
+        <div id="top-nav">
+            <div id="logo">codeplayer</div>
+            <div id="top-wrapper">
+                <div id="html" class="topContent">
+                    HTML
+                </div>
+                <div id="css" class="topContent">
+                    CSS
+                </div>
+                <div id="javascript" class="topContent">
+                    JavaScript
+                </div>
+                <div id="output" class="topContent">
+                    Output
+                </div>
+            </div>
+        </div>
+        <textarea id="htmlBo" class="bodyContent">    html
+        </textarea>
+        <textarea id="cssBo" class="bodyContent">    css
+        </textarea>
+        <textarea id="javascriptBo" class="bodyContent">    javascript
+        </textarea>
+        <iframe id = "outputBo" class= "bodyContent"></iframe>
+        <!--<div id="outputBo" class="bodyContent">    
+            <script id="outputScript"></script>
+            <style id="outputStyle"></style>         </div>
+-->
+        <script>
+            
+            /*$("#htmlBo").keyup(function(e){
+                $("#outputBo").html($("#htmlBo").html());
+            });
+            $("#cssBo").keyup(function(e){
+                $("#outputStyle").html($("#cssBo").html());
+            });
+            $("#javascriptBo").keyup(function(e){
+                $("#outputScript").html($("#javascriptBo").html());
+            });*/
+        
+            $(".bodyContent").keyup(function(e){
+                $("iframe").contents().find("html").html("<html><head><style type = 'text/css'>" + $("#cssBo").val() + "</style></head><body>" + $("#htmlBo").val() + "</body></html>" );
+                document.getElementById("outputBo").contentWindow.eval($("#javascriptBo").val());
+                
+
+            });
+            const html = {
+                name: "#htmlBo", 
+                active: false
+            }
+            const css = {
+                name: "#cssBo", 
+                active: false
+            }
+            const javascript = {
+                name: "#javascriptBo", 
+                active: false
+            }
+            const output = {
+                name: "#outputBo", 
+                active: false
+            }
+            var numAve = 0;
+            var objArr = [html , css, javascript, output];
+            function resize(){
+                var i =0;
+                if(numAve )
+                var toResize = 100/numAve;
+                while(i < objArr.length){
+                    if(objArr[i].active){
+                        $(objArr[i].name).css("width", toResize + "vw");
+                        $(objArr[i].name).show();
+                    }
+                    
+                    i++;
+                }
+            }
+            $(".topContent").click(function(){
+                if($(this).css("backgroundColor") == "rgb(173, 216, 230)"){
+                    numAve--;
+                    $(this).css({backgroundColor: "lightgrey"});
+                    switch($(this).attr('id')){
+                            case 'html':
+                                html.active= false;
+                                $(html.name).hide();
+                                break;
+                            case 'css':
+                                css.active= false;
+                                $(css.name).hide();
+                                break;
+                            case 'javascript':
+                                javascript.active= false;
+                                $(javascript.name).hide();
+                                break;
+                            case 'output':
+                                output.active= false;
+                                $(output.name).hide();
+                                break;
+                        
+                    }
+                    resize();
+                }
+                else{
+                    $(this).css({backgroundColor: "lightblue"});
+                    numAve++;
+                    switch($(this).attr('id')){
+                            case 'html':
+                                html.active= true;
+                                break;
+                            case 'css':
+                                css.active= true;
+                                break;
+                            case 'javascript':
+                                javascript.active= true;
+                                break;
+                            case 'output':
+                                output.active= true;
+                                break;
+                        
+                    }
+                    resize();
+
+            }
+        });
+            
+        </script>
+
+    </body>
+</html>
